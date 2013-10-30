@@ -1,8 +1,16 @@
 /*
-Name of file	: Addressbuch_SchmidtScholz.c
+Name of file	: Addressbook_SchmidtScholz.c
 Author			: Samuel Schmidt <sschmidt01@student.tgm.ac.at>, Scholz Dominik <dscholz@student.tgm.ac.at>
 Version			: 1
-Description		: Simple Calculator
+Description		: Simple Addressbook
+*/
+
+/*
+TODO
+				: %s alternative bei fprintf in newEntry() finden
+				: dynamischer Speicher um beim Hinzufuegen von neuen Personen nicht auf einen statischen Wert berschraenkt zu sein
+				: deleteEntry implementieren
+				: Bugs finden und terminieren
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,8 +26,7 @@ Description		: Simple Calculator
 /* Structs */
 typedef struct
 {
-	char firstname[NAME];
-	char lastname[NAME];
+	char name[NAME];
 	char phone[PHONE];
 	char email[EMAIL];
 } Person;
@@ -35,6 +42,7 @@ void newEntry();
 void deleteEntry();
 
 FILE *abf;
+FILE *temp;
 char display[MAX];
 
 int main()
@@ -43,7 +51,7 @@ int main()
 	char linebreak;
 	Person person;
 
-	printf("Simple Addressbook\nEnter (1-4)+Linebreak\n 1> Display Entries\n 2> New Entry\n 3> Delete Entry\n 4> Exit\n");
+	printf(" 1> Display Entries\n 2> New Entry\n 3> Delete Entry\n 4> Exit\n");
 	if(!(scanf("%d%c", &menuChoice, &linebreak) == 2 ||linebreak == 10 || (menuChoice >= 1 && menuChoice <= 4))){
 		printf("Follow the instructions!\n");
 		getch();
@@ -79,48 +87,59 @@ void newEntry()
 {
 	Person person;
 	Address address;
-	abf = fopen("AddressBook.txt","a+");
 
-	printf("Please Enter the Details(followed by linebreak/enter)\n Person:\n  First Name:\n   ");
-	scanf("%s", person.firstname);
-
-	printf("  Last Name:\n   ");
-	scanf("%s", person.lastname);
+	printf("Please Enter the Details(followed by linebreak/enter)\n Person:\n  Name:\n   ");
+	gets(person.name);
 
 	printf("  Phonenumber:\n   ");
-	scanf("%s", &person.phone);
+	gets(person.phone);
 
 	printf("  E-mail:\n   ");
-	scanf("%s", &person.email);
+	gets(person.email);
 		
 	printf(" Address:\n  Street:\n   ");
-	scanf("%s", &address.street);
+	gets(address.street);
 
 	printf("  Housenumber:\n   ");
-	scanf("%s", &address.housenumber);
+	gets(address.housenumber);
 
-	fprintf(abf,"%s %s %s %s \n", person.firstname,  person.lastname, person.email, person.phone, address.street, address.housenumber);
+	abf = fopen("AddressBook_SchmidtScholz.txt","a+");
+	fprintf(abf,"%s, %s, %s, %s, %s \n", person.name, person.email, person.phone, address.street, address.housenumber);
 	fclose(abf);
 
 }
 
 void deleteEntry()
 {
-	abf = fopen("AddressBook.txt","r");
+	/*
+	abf = fopen("AddressBook_SchmidtScholz.txt","r");
+	char email[EMAIL];
+	printf("Enter Email");
+	scanf("%s", &email);
+	
+
+
+
 	fclose(abf);
+	*/
 
 }
 
 
 void displayEntries()
 {
-	abf = fopen("AddressBook.txt","r");
-	
-
-	while(fgets(display, MAX, abf))
-	{
-		printf("%s\n", display);
+	if((abf=fopen("AddressBook_SchmidtScholz.txt","r"))==NULL){
+		printf("\n\nAddressBook_SchmidtScholz.txt does not exist\n\n");
 	}
+	else{
+		printf("\n\nName, E-mail, Phone, Street, Housenumber\n\n");
 
-	fclose(abf);
+		while(fgets(display, MAX, abf))
+		{
+			printf("%s", display);
+		}
+
+		printf("\n");
+		fclose(abf);
+	}
 }
