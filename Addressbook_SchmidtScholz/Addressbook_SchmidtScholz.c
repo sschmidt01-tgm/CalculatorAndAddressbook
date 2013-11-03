@@ -47,6 +47,7 @@ char display[MAX];
 
 int main()
 {
+	void (*addressbook[])() = {displayEntries, newEntry, deleteEntry};
 	int menuChoice;
 	char linebreak;
 	Person person;
@@ -61,15 +62,15 @@ int main()
 
 	switch(menuChoice){
 		case 1:
-			displayEntries();
+			addressbook[0]();
 			main();
 			break;
 		case 2:
-			newEntry();
+			addressbook[1]();
 			main();
 			break;
 		case 3:
-			deleteEntry();
+			addressbook[2]();
 			main();
 			break;
 		case 4:
@@ -112,14 +113,29 @@ void newEntry()
 void deleteEntry()
 {
 	/*
-	abf = fopen("AddressBook_SchmidtScholz.txt","r");
+	Address address;
+	Person person;
+	temp = fopen("temp.txt","a+");
 	char email[EMAIL];
-	printf("Enter Email");
-	scanf("%s", &email);
+
+	if((abf=fopen("AddressBook_SchmidtScholz.txt","r"))==NULL){
+		printf("\n\nAddressBook_SchmidtScholz.txt does not exist\n\n");
+	}
+	else{
+		printf("Enter Email");
+		gets(email);
+
+		while(fgets(display, MAX, abf))
+		{
+			if(strcmp(email, person.name)!=0)
+				fprintf(abf,"%s, %s, %s, %s, %s \n", person.name, person.email, person.phone, address.street, address.housenumber);
+		}
+	}
+
 	
 
 
-
+	fclose(temp);
 	fclose(abf);
 	*/
 
@@ -132,7 +148,7 @@ void displayEntries()
 		printf("\n\nAddressBook_SchmidtScholz.txt does not exist\n\n");
 	}
 	else{
-		printf("\n\nName, E-mail, Phone, Street, Housenumber\n\n");
+		printf("\n\nNAME, E-MAIL, PHONE, STREET, HOUSENUMBER:\n\n");
 
 		while(fgets(display, MAX, abf))
 		{
